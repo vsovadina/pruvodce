@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hraní na míru | DomeCZECH</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #efeae4;
+      color: #404040;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .progress {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #4c3e3b;
+    }
+    .progress-bar {
+      height: 8px;
+      width: 100%;
+      background: #dcd2cb;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: #4c3e3b;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    .question {
+      font-size: 1.3em;
+      text-align: center;
+    }
+    .img-options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .img-option {
+      border: 2px solid transparent;
+      border-radius: 12px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border 0.3s;
+    }
+    .img-option img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+    .img-option.selected {
+      border-color: #4c3e3b;
+    }
+    .submit-button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      font-size: 1em;
+      font-weight: 600;
+      border-radius: 8px;
+      background: #4c3e3b;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    input[type=email] {
+      width: 100%;
+      padding: 18px;
+      font-size: 1em;
+      margin-top: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-family: 'Poppins', sans-serif;
+    }
+    #successMessage {
+      text-align: center;
+      padding: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <form id="quizForm">
+      <div class="progress" id="progressText">Krok 1 z 3</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+      <div class="step" id="step1">
+        <div class="question">Co vaše dítě nejvíce zajímá?</div>
+        <div class="img-options">
+          <div class="img-option" data-answer="Stavění"><img src="https://via.placeholder.com/120?text=Stavění"></div>
+          <div class="img-option" data-answer="Učení hrou"><img src="https://via.placeholder.com/120?text=Učení+hrou"></div>
+          <div class="img-option" data-answer="Tvoření"><img src="https://via.placeholder.com/120?text=Tvoření"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step2" style="display:none">
+        <div class="question">Kolik má dítě let?</div>
+        <div class="img-options">
+          <div class="img-option" data-answer="0–2 roky"><img src="https://via.placeholder.com/120?text=0-2"></div>
+          <div class="img-option" data-answer="3–5 let"><img src="https://via.placeholder.com/120?text=3-5"></div>
+          <div class="img-option" data-answer="6+ let"><img src="https://via.placeholder.com/120?text=6+"></div>
+        </div>
+      </div>
+
+      <div class="step" id="step3" style="display:none">
+        <div class="question">Zadejte svůj e-mail a my vám pošleme doporučení</div>
+        <input type="email" name="email" required />
+        <button type="submit" class="submit-button">Získat doporučení</button>
+      </div>
+    </form>
+
+    <div id="successMessage" style="display:none">
+      <h2>Děkujeme!</h2>
+      <p>Vaše odpovědi byly odeslány. Podívejte se do e-mailu, posíláme vám doporučení.</p>
+    </div>
+  </div>
+
+  <script>
+    const steps = document.querySelectorAll('.step');
+    const progressText = document.getElementById('progressText');
+    const progressFill = document.getElementById('progressFill');
+    let currentStep = 0;
+    const answers = {};
+
+    function showStep(index) {
+      steps.forEach((step, i) => {
+        step.style.display = i === index ? 'block' : 'none';
+      });
+      progressText.textContent = `Krok ${index + 1} z ${steps.length}`;
+      progressFill.style.width = `${((index + 1) / steps.length) * 100}%`;
+    }
+
+    function handleClick(optionEl) {
+      optionEl.parentElement.querySelectorAll('.img-option').forEach(opt => opt.classList.remove('selected'));
+      optionEl.classList.add('selected');
+      const answer = optionEl.getAttribute('data-answer');
+      answers[`step${currentStep + 1}`] = answer;
+      setTimeout(() => {
+        if (currentStep < steps.length - 1) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      }, 300);
+    }
+
+    document.querySelectorAll('.img-option').forEach(opt => {
+      opt.addEventListener('click', () => handleClick(opt));
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const email = this.email.value;
+      const payload = { ...answers, email };
+
+      await fetch("https://script.google.com/macros/s/TVOJE_WEB_APP_URL/exec", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      document.getElementById("quizForm").style.display = "none";
+      document.getElementById("successMessage").style.display = "block";
+    });
+
+    showStep(currentStep);
+  </script>
+</body>
+</html>
