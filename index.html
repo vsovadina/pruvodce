@@ -7,56 +7,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://front.boldem.cz/boldem.js?uc=996385&wg=71eeb0ea-cb7a-43bd-9be7-9897556e918f&sc=0" defer type="text/javascript"></script>
   <style>
-    * { box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #efeae4;
       color: #404040;
-      margin: 0;
-      padding: 0;
+      padding: 40px;
     }
     .container {
       max-width: 600px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      margin: auto;
     }
-    .progress {
+    .progress, .question {
       text-align: center;
-      margin-bottom: 10px;
-      font-weight: 600;
-      color: #4c3e3b;
-    }
-    .progress-bar {
-      height: 8px;
-      width: 100%;
-      background: #dcd2cb;
-      border-radius: 4px;
-      overflow: hidden;
       margin-bottom: 20px;
-    }
-    .progress-fill {
-      height: 100%;
-      background-color: #4c3e3b;
-      width: 0%;
-      transition: width 0.4s ease;
-    }
-    .question {
-      font-size: 1.3em;
-      text-align: center;
     }
     .options {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 15px;
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .option {
       border: 2px solid transparent;
       border-radius: 12px;
       cursor: pointer;
-      overflow: hidden;
-      transition: border 0.3s;
       padding: 10px;
       background: #fff;
       min-width: 120px;
@@ -66,210 +41,125 @@
       border-color: #4c3e3b;
       background: #f5eee7;
     }
-    .submit-button {
+    .submit-button, input[type=email] {
       width: 100%;
-      margin-top: 20px;
       padding: 14px;
       font-size: 1em;
-      font-weight: 600;
-      border-radius: 8px;
-      background: #4c3e3b;
-      color: #fff;
-      border: none;
-      cursor: pointer;
-    }
-    input[type=email] {
-      width: 100%;
-      padding: 18px;
-      font-size: 1em;
-      margin-top: 20px;
       border-radius: 8px;
       border: 1px solid #ccc;
-      font-family: 'Poppins', sans-serif;
-    }
-    #successMessage {
-      text-align: center;
-      padding: 30px;
-    }
-    .recommendation {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
       margin-top: 20px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    .submit-button {
+      background: #4c3e3b;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div id="pruvodcetest"></div>
-    <form id="quizForm">
-      <div class="progress" id="progressText">Krok 1 z 1</div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <div id="formSteps"></div>
-    </form>
-    <div id="successMessage" style="display:none">
-      <h2>Děkujeme!</h2>
-      <p>Vaše odpovědi byly uloženy. Zůstaňte na příjmu!</p>
-      <div class="recommendation" id="recommendationBox"></div>
-    </div>
-  </div>
+<div class="container">
+   <div id="pruvodcetest"></div>
+  <form id="quizForm">
+    <div class="progress" id="progressText">Krok 1 z 2</div>
+    <div id="formSteps"></div>
+  </form>
 
-  <script>
-    const steps = [
-      {
-        name: 'proc',
-        question: 'Co v hračce hledáte?',
-        multiple: true,
-        options: ['Hledáme něco smysluplného na doma', 'Máme oslavu (narozeniny, Vánoce…)', 'Chceme doplnit stávající hračky', 'Chceme podpořit učení nebo rozvoj', 'Jen se rozhlížím', 'Hledám něco pro více dětí najednou']
-      },
-      {
-        name: 'co',
-        question: 'Co chcete, aby hračka vašemu dítěti přinesla?',
-        multiple: true,
-        options: ['Klid a soustředění', 'Společné hraní', 'Nový podnět k přemýšlení', 'Rozvoj rukou a tvoření']
-      },
-      {
-        name: 'popis',
-        question: 'Jak byste popsala své dítě?',
-        multiple: true,
-        options: ['Staví', 'Tvoří', 'Pořád v pohybu', 'Miluje čísla a písmena']
-      },
-      {
-        name: 'typy',
-        question: 'O jaké typy hraček máte zájem?',
-        multiple: true,
-        options: ['Domečky a nábytek', 'Silnice a město', 'Stavebnice', 'Montessori pomůcky', 'Kreativní tvoření', 'Open-ended hraní']
-      },
-      {
-        name: 'vek',
-        question: 'Kolik má dítě let?',
-        multiple: false,
-        options: ['0–2', '3–5', '6+']
-      },
-      {
-        name: 'deti',
-        question: 'Kolik máte dětí?',
-        multiple: false,
-        options: ['1', '2', '3', '4+', 'Jsme velká rodina!']
-      },
-      {
-        name: 'domeczech',
-        question: 'Znáte značku DomeCZECH?',
-        multiple: false,
-        options: ['Ano, už jsme nakoupili', 'Znám, ale nic ještě nemáme', 'Neznám, slyším poprvé']
-      },
-      {
-        name: 'email',
-        question: 'Zadejte svůj e-mail',
-        input: 'email'
-      }
-    ];
+  <form id="bf-form-fs-ok06okd93" class="bf-form" style="display:none" method="POST">
+    <input id="te-our5cbiam-input" name="email" type="email" />
+  </form>
+</div>
 
-    const formSteps = document.getElementById('formSteps');
-    const progressText = document.getElementById('progressText');
-    const progressFill = document.getElementById('progressFill');
-    let currentStep = 0;
-    const answers = {};
-
-    function renderStep() {
-      const step = steps[currentStep];
-      formSteps.innerHTML = '';
-
-      const q = document.createElement('div');
-      q.className = 'question';
-      q.textContent = step.question;
-      formSteps.appendChild(q);
-
-      if (step.input === 'email') {
-        const input = document.createElement('input');
-        input.type = 'email';
-        input.name = 'email';
-        input.required = true;
-        formSteps.appendChild(input);
-
-        const btn = document.createElement('button');
-        btn.type = 'submit';
-        btn.className = 'submit-button';
-        btn.textContent = 'Odeslat';
-        formSteps.appendChild(btn);
-      } else {
-        const box = document.createElement('div');
-        box.className = 'options';
-        step.options.forEach((option) => {
-          const opt = document.createElement('div');
-          opt.className = 'option';
-          opt.textContent = option;
-          opt.onclick = () => {
-            if (step.multiple) {
-              opt.classList.toggle('selected');
-            } else {
-              [...box.children].forEach(el => el.classList.remove('selected'));
-              opt.classList.add('selected');
-              answers[step.name] = option;
-              nextStep();
-            }
-          };
-          box.appendChild(opt);
-        });
-        formSteps.appendChild(box);
-
-        if (step.multiple) {
-          const btn = document.createElement('button');
-          btn.className = 'submit-button';
-          btn.textContent = 'Pokračovat';
-          btn.onclick = (e) => {
-            e.preventDefault();
-            const selected = [...box.children].filter(el => el.classList.contains('selected')).map(el => el.textContent);
-            if (selected.length === 0) {
-              alert('Vyberte prosím alespoň jednu možnost.');
-              return;
-            }
-            answers[step.name] = selected;
-            nextStep();
-          };
-          formSteps.appendChild(btn);
-        }
-      }
-
-      progressText.textContent = `Krok ${currentStep + 1} z ${steps.length}`;
-      progressFill.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+<script>
+  const steps = [
+    {
+      name: 'typy',
+      question: 'O jaké typy hraček máte zájem?',
+      multiple: true,
+      options: ['Domečky a nábytek', 'Silnice a město', 'Stavebnice', 'Montessori pomůcky']
+    },
+    {
+      name: 'email',
+      question: 'Zadejte svůj e-mail',
+      input: 'email'
     }
+  ];
 
-    function nextStep() {
-      currentStep++;
-      if (currentStep < steps.length) {
-        renderStep();
-      }
-    }
+  const formSteps = document.getElementById('formSteps');
+  const progressText = document.getElementById('progressText');
+  let currentStep = 0;
+  const answers = {};
 
-    document.getElementById("quizForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const email = this.email.value;
-      answers['email'] = email;
+  function renderStep() {
+    const step = steps[currentStep];
+    formSteps.innerHTML = '';
 
-      await fetch("https://app.boldem.cz/form/TVUJ_FORMULAR", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(answers)
+    const q = document.createElement('div');
+    q.className = 'question';
+    q.textContent = step.question;
+    formSteps.appendChild(q);
+
+    if (step.input === 'email') {
+      const input = document.createElement('input');
+      input.type = 'email';
+      input.id = 'finalEmail';
+      input.name = 'email';
+      input.required = true;
+      formSteps.appendChild(input);
+
+      const btn = document.createElement('button');
+      btn.type = 'submit';
+      btn.className = 'submit-button';
+      btn.textContent = 'Odeslat';
+      formSteps.appendChild(btn);
+    } else {
+      const box = document.createElement('div');
+      box.className = 'options';
+      step.options.forEach((option) => {
+        const opt = document.createElement('div');
+        opt.className = 'option';
+        opt.textContent = option;
+        opt.onclick = () => {
+          opt.classList.toggle('selected');
+        };
+        box.appendChild(opt);
       });
+      formSteps.appendChild(box);
 
-      this.style.display = "none";
-      document.getElementById("successMessage").style.display = "block";
+      const btn = document.createElement('button');
+      btn.className = 'submit-button';
+      btn.textContent = 'Pokračovat';
+      btn.onclick = (e) => {
+        e.preventDefault();
+        const selected = [...box.children].filter(el => el.classList.contains('selected')).map(el => el.textContent);
+        if (selected.length === 0) {
+          alert('Vyberte prosím alespoň jednu možnost.');
+          return;
+        }
+        answers[step.name] = selected;
+        currentStep++;
+        renderStep();
+      };
+      formSteps.appendChild(btn);
+    }
 
-      const box = document.getElementById("recommendationBox");
-      const typy = answers['typy'] || [];
-      let html = '<h3>Doporučujeme vyzkoušet:</h3><ul>';
-      if (typy.includes('Stavebnice')) html += '<li><a href="https://www.domeczech.cz/stavebnice">Naše dřevěné stavebnice</a></li>';
-      if (typy.includes('Domečky a nábytek')) html += '<li><a href="https://www.domeczech.cz/urbix">URBIX domečky</a></li>';
-      if (typy.includes('Montessori pomůcky')) html += '<li><a href="https://www.domeczech.cz/montessori">multiGEOBOARD</a></li>';
-      if (typy.includes('Silnice a město')) html += '<li><a href="https://www.domeczech.cz/woodyway">WoodyWay silnice</a></li>';
-      html += '</ul>';
-      box.innerHTML = html;
-    });
+    progressText.textContent = `Krok ${currentStep + 1} z ${steps.length}`;
+  }
 
-    renderStep();
-  </script>
+  document.getElementById("quizForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const email = document.getElementById('finalEmail').value;
+    if (!email || !email.includes('@')) {
+      alert('Zadejte prosím platný e-mail.');
+      return;
+    }
+    answers['email'] = email;
+    document.getElementById('te-our5cbiam-input').value = email;
+    document.getElementById('bf-form-fs-ok06okd93').submit();
+  });
+
+  renderStep();
+</script>
 </body>
 </html>
- 
