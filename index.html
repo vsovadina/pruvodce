@@ -60,24 +60,61 @@
 </head>
 <body>
 <div class="container">
-   <div id="pruvodcetest"></div>
-  <form id="quizForm">
-    <div class="progress" id="progressText">Krok 1 z 2</div>
+  <div id="pruvodcetest"></div>
+  <div id="quizWizard">
+    <div class="progress" id="progressText">Krok 1 z 1</div>
     <div id="formSteps"></div>
-  </form>
+  </div>
 
   <form id="bf-form-fs-ok06okd93" class="bf-form" style="display:none" method="POST">
     <input id="te-our5cbiam-input" name="email" type="email" />
+    <button type="submit" class="bf-button__btn">Odeslat do Boldem</button>
   </form>
 </div>
 
 <script>
   const steps = [
     {
+      name: 'proc',
+      question: 'Co v hračce hledáte?',
+      multiple: true,
+      options: ['Hledáme něco smysluplného na doma', 'Máme oslavu (narozeniny, Vánoce…)', 'Chceme doplnit stávající hračky', 'Chceme podpořit učení nebo rozvoj', 'Jen se rozhlížím', 'Hledám něco pro více dětí najednou']
+    },
+    {
+      name: 'co',
+      question: 'Co chcete, aby hračka vašemu dítěti přinesla?',
+      multiple: true,
+      options: ['Klid a soustředění', 'Společné hraní', 'Nový podnět k přemýšlení', 'Rozvoj rukou a tvoření']
+    },
+    {
+      name: 'popis',
+      question: 'Jak byste popsala své dítě?',
+      multiple: true,
+      options: ['Staví', 'Tvoří', 'Pořád v pohybu', 'Miluje čísla a písmena']
+    },
+    {
       name: 'typy',
       question: 'O jaké typy hraček máte zájem?',
       multiple: true,
-      options: ['Domečky a nábytek', 'Silnice a město', 'Stavebnice', 'Montessori pomůcky']
+      options: ['Domečky a nábytek', 'Silnice a město', 'Stavebnice', 'Montessori pomůcky', 'Kreativní tvoření', 'Open-ended hraní']
+    },
+    {
+      name: 'vek',
+      question: 'Kolik má dítě let?',
+      multiple: false,
+      options: ['0–2', '3–5', '6+']
+    },
+    {
+      name: 'deti',
+      question: 'Kolik máte dětí?',
+      multiple: false,
+      options: ['1', '2', '3', '4+', 'Jsme velká rodina!']
+    },
+    {
+      name: 'domeczech',
+      question: 'Znáte značku DomeCZECH?',
+      multiple: false,
+      options: ['Ano, už jsme nakoupili', 'Znám, ale nic ještě nemáme', 'Neznám, slyším poprvé']
     },
     {
       name: 'email',
@@ -109,9 +146,19 @@
       formSteps.appendChild(input);
 
       const btn = document.createElement('button');
-      btn.type = 'submit';
+      btn.type = 'button';
       btn.className = 'submit-button';
       btn.textContent = 'Odeslat';
+      btn.onclick = () => {
+        const email = document.getElementById('finalEmail').value;
+        if (!email || !email.includes('@')) {
+          alert('Zadejte prosím platný e-mail.');
+          return;
+        }
+        answers['email'] = email;
+        document.getElementById('te-our5cbiam-input').value = email;
+        document.querySelector('form#bf-form-fs-ok06okd93 button.bf-button__btn')?.click();
+      };
       formSteps.appendChild(btn);
     } else {
       const box = document.createElement('div');
@@ -121,43 +168,46 @@
         opt.className = 'option';
         opt.textContent = option;
         opt.onclick = () => {
-          opt.classList.toggle('selected');
+          if (step.multiple) {
+            opt.classList.toggle('selected');
+          } else {
+            [...box.children].forEach(el => el.classList.remove('selected'));
+            opt.classList.add('selected');
+            answers[step.name] = option;
+            nextStep();
+          }
         };
         box.appendChild(opt);
       });
       formSteps.appendChild(box);
 
-      const btn = document.createElement('button');
-      btn.className = 'submit-button';
-      btn.textContent = 'Pokračovat';
-      btn.onclick = (e) => {
-        e.preventDefault();
-        const selected = [...box.children].filter(el => el.classList.contains('selected')).map(el => el.textContent);
-        if (selected.length === 0) {
-          alert('Vyberte prosím alespoň jednu možnost.');
-          return;
-        }
-        answers[step.name] = selected;
-        currentStep++;
-        renderStep();
-      };
-      formSteps.appendChild(btn);
+      if (step.multiple) {
+        const btn = document.createElement('button');
+        btn.className = 'submit-button';
+        btn.textContent = 'Pokračovat';
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const selected = [...box.children].filter(el => el.classList.contains('selected')).map(el => el.textContent);
+          if (selected.length === 0) {
+            alert('Vyberte prosím alespoň jednu možnost.');
+            return;
+          }
+          answers[step.name] = selected;
+          nextStep();
+        };
+        formSteps.appendChild(btn);
+      }
     }
 
     progressText.textContent = `Krok ${currentStep + 1} z ${steps.length}`;
   }
 
-  document.getElementById("quizForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const email = document.getElementById('finalEmail').value;
-    if (!email || !email.includes('@')) {
-      alert('Zadejte prosím platný e-mail.');
-      return;
+  function nextStep() {
+    currentStep++;
+    if (currentStep < steps.length) {
+      renderStep();
     }
-    answers['email'] = email;
-    document.getElementById('te-our5cbiam-input').value = email;
-    document.getElementById('bf-form-fs-ok06okd93').submit();
-  });
+  }
 
   renderStep();
 </script>
