@@ -155,10 +155,15 @@
           alert('Zadejte prosím platný e-mail.');
           return;
         }
-        // vložení e-mailu do hidden pole
-        const boldemInput = document.getElementById('te-our5cbiam-input');
-        console.log(email);
-        if (boldemInput) boldemInput.value = email;
+
+        const interval = setInterval(() => {
+          const boldemInput = document.getElementById('te-our5cbiam-input');
+          if (boldemInput) {
+            boldemInput.value = email;
+            clearInterval(interval);
+            console.log('E-mail vložen do Boldem inputu.');
+          }
+        }, 200);
       };
       formSteps.appendChild(btn);
     } else {
