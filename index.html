@@ -155,9 +155,9 @@
           alert('Zadejte prosím platný e-mail.');
           return;
         }
-        answers['email'] = email;
-        document.getElementById('te-our5cbiam-input').value = email;
-        document.querySelector('form div#fb-bjrdype3i button.bf-button__btn').click();
+        // vložení e-mailu do hidden pole
+        const boldemInput = document.getElementById('te-our5cbiam-input');
+        if (boldemInput) boldemInput.value = email;
       };
       formSteps.appendChild(btn);
     } else {
