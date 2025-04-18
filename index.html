@@ -157,11 +157,12 @@
         }
 
         const interval = setInterval(() => {
-          const boldemInput = document.getElementById('te-our5cbiam-input');
+          const boldemInput = document.querySelector('input[name=email]');
           if (boldemInput) {
             boldemInput.value = email;
             clearInterval(interval);
             console.log('E-mail vložen do Boldem inputu.');
+          }
           }
         }, 200);
       };
