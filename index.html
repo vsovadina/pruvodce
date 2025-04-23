@@ -258,5 +258,19 @@
 
   renderStep();
 </script>
+  <script>
+  $(function () {
+    $(document).on('mousedown', 'form#bf-form-fs-ok06okd93 button.bf-button__btn', function () {
+      const email = $('#finalEmail').val();
+      if (email && email.includes('@')) {
+        $('#te-our5cbiam-input').val(email).trigger('input').trigger('change').trigger('blur');
+        console.log('✅ [Delegace] E-mail vložen těsně před odesláním:', email);
+      } else {
+        console.warn('⚠️ [Delegace] E-mail nebyl validní nebo nebyl vyplněn.');
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
