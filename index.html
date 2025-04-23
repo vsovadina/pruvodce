@@ -159,15 +159,15 @@
           return;
         }
 
-        // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
+          // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
         const checkAndInsert = setInterval(() => {
           const boldemInput = $('#te-our5cbiam-input');
           if (boldemInput.length) {
             boldemInput.val(email);
-            console.log('E-mail vložen přes jQuery.');
+            console.log('E-mail vložen přes jQuery.'+email);
             clearInterval(checkAndInsert);
           }
-        }, 200);
+        }, 2000);
       };
       formSteps.appendChild(btn);
     } else {
