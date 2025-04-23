@@ -157,11 +157,15 @@
         }
 
         const interval = setInterval(() => {
-          const boldemInput = document.querySelector('input[name=email]');
+          
+          //const boldemInput = document.querySelector('input[name=email]');
+          const boldemInput = document.getElementById('te-our5cbiam-input').value;
           if (boldemInput) {
             boldemInput.value = email;
             clearInterval(interval);
-            console.log('E-mail vložen do Boldem inputu.');
+            alert('E-mail vložen do Boldem inputu.'+email);
+          }else{
+            alert('Nenacten mail');
           }
           
         }, 200);
