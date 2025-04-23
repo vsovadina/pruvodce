@@ -170,8 +170,11 @@
   if (nativeInput) {
     try {
       const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+      nativeInput.focus();
       nativeSetter.call(nativeInput, email);
       nativeInput.dispatchEvent(new Event('input', { bubbles: true }));
+      nativeInput.dispatchEvent(new Event('change', { bubbles: true }));
+      nativeInput.dispatchEvent(new Event('blur', { bubbles: true }));
       console.log('[FAZE 2] Hodnota vložena nativně:', nativeInput.value);
       clearInterval(checkAndInsert);
     } catch (err) {
