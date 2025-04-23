@@ -158,7 +158,17 @@
           alert('Zadejte prosím platný e-mail.');
           return;
         }
+        const nativeInput = document.getElementById('te-our5cbiam-input');
+if (nativeInput) {
+  nativeInput.value = email;
 
+  // simulace reálného zadání – kvůli event listenerům Boldemu
+  const event = new Event('input', { bubbles: true });
+  nativeInput.dispatchEvent(event);
+
+  clearInterval(checkAndInsert);
+  console.log('E-mail vložen přes input + trigger. '+email);
+}
           // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
         const checkAndInsert = setInterval(() => {
           const boldemInput = $('#te-our5cbiam-input');
