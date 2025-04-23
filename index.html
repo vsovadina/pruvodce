@@ -74,7 +74,7 @@
 
 <script>
   const steps = [
-    {
+   /* {
       name: 'proc',
       question: 'Co v hračce hledáte?',
       multiple: true,
@@ -115,7 +115,7 @@
       question: 'Znáte značku DomeCZECH?',
       multiple: false,
       options: ['Ano, už jsme nakoupili', 'Znám, ale nic ještě nemáme', 'Neznám, slyším poprvé']
-    },
+    },*/
     {
       name: 'email',
       question: 'Zadejte svůj e-mail',
@@ -149,6 +149,9 @@
       btn.type = 'button';
       btn.className = 'submit-button';
       btn.textContent = 'Odeslat';
+      $(document).on("click", "btn", function() {
+    alert(document.getElementById('finalEmail').value);
+});
       btn.onclick = () => {
         const email = document.getElementById('finalEmail').value;
         if (!email || !email.includes('@')) {
@@ -168,7 +171,7 @@
             alert('Nenacten mail');
           }
           
-        }, 200);
+        }, 2000);
       };
       formSteps.appendChild(btn);
     } else {
