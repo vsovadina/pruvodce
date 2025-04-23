@@ -140,6 +140,7 @@
     q.textContent = step.question;
     formSteps.appendChild(q);
 
+    
     if (step.input === 'email') {
       const input = document.createElement('input');
       input.type = 'email';
@@ -148,11 +149,7 @@
       input.required = true;
       formSteps.appendChild(input);
 
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'submit-button';
-      btn.textContent = 'Odeslat';
-     const btn = document.createElement('button');
+      const btn = document.createElement('button'); // pouze jedno vytvoření tlačítka
       btn.type = 'button';
       btn.className = 'submit-button';
       btn.textContent = 'Odeslat';
@@ -171,12 +168,12 @@
           if (nativeInput) {
             nativeInput.value = email;
             nativeInput.dispatchEvent(new Event('input', { bubbles: true }));
-            console.log(' E-mail vložen nativně: ' + email);
+            console.log('✅ E-mail vložen nativně: ' + email);
             clearInterval(checkAndInsert);
           } else {
             intervalCounter++;
             if (intervalCounter >= maxTries) {
-              console.warn(' Nepodařilo se najít Boldem input pro e-mail.');
+              console.warn('❌ Nepodařilo se najít Boldem input pro e-mail.');
               clearInterval(checkAndInsert);
             }
           }
