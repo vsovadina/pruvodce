@@ -6,10 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hraní na míru | DomeCZECH</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://front.boldem.cz/boldem.js?uc=996385&wg=71eeb0ea-cb7a-43bd-9be7-9897556e918f&sc=0" defer type="text/javascript">
+  <!-- Tohle ponecháš -->
+<script src="https://front.boldem.cz/boldem.js?uc=996385&wg=71eeb0ea-cb7a-43bd-9be7-9897556e918f&sc=0" defer></script>
 
+<!-- Tohle přesuneš pod něj do samostatného <script> -->
+<script>
   // Delegované vložení e-mailu do formuláře Boldem při kliknutí na odesílací tlačítko
-  $(document).on('mousedown', 'form#bf-form-fs-ok06okd93 button.bf-button__btn', function() {
+  $(document).on('mousedown', 'form#bf-form-fs-ok06okd93 button.bf-button__btn', function () {
     const email = $('#finalEmail').val();
     if (email && email.includes('@')) {
       $('#te-our5cbiam-input').val(email).trigger('input').trigger('change').trigger('blur');
@@ -18,8 +21,8 @@
       console.warn('⚠️ [Delegace] E-mail nebyl validní nebo nebyl vyplněn.');
     }
   });
-
 </script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <style>
     body {
