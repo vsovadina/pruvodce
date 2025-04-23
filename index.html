@@ -166,12 +166,12 @@
           if (nativeInput) {
             nativeInput.value = email;
             nativeInput.dispatchEvent(new Event('input', { bubbles: true }));
-            console.log('✅ E-mail vložen nativně: ' + email);
+            console.log('E-mail vložen nativně: ' + email);
             clearInterval(checkAndInsert);
           } else {
             intervalCounter++;
             if (intervalCounter >= maxTries) {
-              console.warn('❌ Nepodařilo se najít Boldem input pro e-mail.');
+              console.warn('Nepodařilo se najít Boldem input pro e-mail.');
               clearInterval(checkAndInsert);
             }
           }
