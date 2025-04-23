@@ -159,8 +159,7 @@
           alert('Zadejte prosím platný e-mail.');
           return;
         }
-        
-        // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
+           // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
         let intervalCounter = 0;
         const maxTries = 20;
         const checkAndInsert = setInterval(() => {
@@ -169,13 +168,12 @@
 
   if (nativeInput) {
     try {
-      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-      nativeInput.focus();
-      nativeSetter.call(nativeInput, email);
-      nativeInput.dispatchEvent(new Event('input', { bubbles: true }));
-      nativeInput.dispatchEvent(new Event('change', { bubbles: true }));
-      nativeInput.dispatchEvent(new Event('blur', { bubbles: true }));
-      console.log('[FAZE 2] Hodnota vložena nativně:', nativeInput.value);
+      $('#te-our5cbiam-input')
+        .val(email)
+        .trigger('input')
+        .trigger('change')
+        .trigger('blur');
+      console.log('[FAZE 2] Hodnota vložena přes jQuery:', email);
       clearInterval(checkAndInsert);
     } catch (err) {
       console.error('[CHYBA] Při pokusu o vložení e-mailu:', err);
