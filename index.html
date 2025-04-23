@@ -158,24 +158,24 @@
           alert('Zadejte prosím platný e-mail.');
           return;
         }
-        const nativeInput = document.getElementById('te-our5cbiam-input');
-if (nativeInput) {
-  nativeInput.value = email;
-
-  // simulace reálného zadání – kvůli event listenerům Boldemu
-  const event = new Event('input', { bubbles: true });
-  nativeInput.dispatchEvent(event);
-
-  clearInterval(checkAndInsert);
-  console.log('E-mail vložen přes input + trigger. '+email);
-}
-          // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
+        // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
+        let intervalCounter = 0;
+        const maxTries = 20;
         const checkAndInsert = setInterval(() => {
-          const boldemInput = $('#te-our5cbiam-input');
-          if (boldemInput.length) {
-            boldemInput.val(email);
-            console.log('E-mail vložen přes jQuery.'+email);
+          const nativeInput = document.getElementById('te-our5cbiam-input');
+          if (nativeInput) {
+            nativeInput.value = email;
+            nativeInput.dispatchEvent(new Event('input', { bubbles: true }));
+            console.log('✅ E-mail vložen nativně: ' + email);
             clearInterval(checkAndInsert);
+          } else {
+            intervalCounter++;
+            if (intervalCounter >= maxTries) {
+              console.warn('❌ Nepodařilo se najít Boldem input pro e-mail.');
+              clearInterval(checkAndInsert);
+            }
+          }
+        }, 300);
           }
         }, 2000);
       };
