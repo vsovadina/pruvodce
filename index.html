@@ -6,7 +6,7 @@
   <title>Hraní na míru | DomeCZECH</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://front.boldem.cz/boldem.js?uc=996385&wg=71eeb0ea-cb7a-43bd-9be7-9897556e918f&sc=0" defer type="text/javascript"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -75,7 +75,8 @@
 
 <script>
   const steps = [
-   /* {
+    /*
+    {
       name: 'proc',
       question: 'Co v hračce hledáte?',
       multiple: true,
@@ -116,7 +117,8 @@
       question: 'Znáte značku DomeCZECH?',
       multiple: false,
       options: ['Ano, už jsme nakoupili', 'Znám, ale nic ještě nemáme', 'Neznám, slyším poprvé']
-    },*/
+    },
+    */
     {
       name: 'email',
       question: 'Zadejte svůj e-mail',
@@ -150,9 +152,6 @@
       btn.type = 'button';
       btn.className = 'submit-button';
       btn.textContent = 'Odeslat';
-      $(document).on("click", "btn", function() {
-    alert(document.getElementById('finalEmail').value);
-});
       btn.onclick = () => {
         const email = document.getElementById('finalEmail').value;
         if (!email || !email.includes('@')) {
@@ -160,19 +159,15 @@
           return;
         }
 
-        const interval = setInterval(() => {
-          
-          //const boldemInput = document.querySelector('input[name=email]');
-          const boldemInput = document.getElementById('te-our5cbiam-input').value;
-          if (boldemInput) {
-            boldemInput.value = email;
-            clearInterval(interval);
-            alert('E-mail vložen do Boldem inputu.'+email);
-          }else{
-            alert('Nenacten mail');
+        // jQuery čekání na načtení prvku z AJAXu a vložení e-mailu
+        const checkAndInsert = setInterval(() => {
+          const boldemInput = $('#te-our5cbiam-input');
+          if (boldemInput.length) {
+            boldemInput.val(email);
+            console.log('E-mail vložen přes jQuery.');
+            clearInterval(checkAndInsert);
           }
-          
-        }, 2000);
+        }, 200);
       };
       formSteps.appendChild(btn);
     } else {
